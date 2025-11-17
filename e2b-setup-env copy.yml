@@ -109,12 +109,9 @@ Parameters:
 
   # Security Configuration - Access control settings
   AllowRemoteSSHIPs:
-    Description: >-
-      IP address range allowed for SSH (port 22) access to the bastion host (CIDR format).
-      Default is restricted to a single IP address. For maximum security, use a single IP with /32 (e.g., '1.2.3.4/32') or your office subnet (e.g., '1.2.3.0/24').
-      WARNING: Setting to '0.0.0.0/0' allows access from anywhere and is NOT RECOMMENDED for production.
+    Description: IP address range allowed for SSH (port 22) access to the bastion host (CIDR format), if you want to allow all IPs, please set it to '0.0.0.0/0'
     Type: String
-    Default: "173.226.103.218/32"
+    Default: "10.0.0.0/8"
 
   # Database Configuration - PostgreSQL settings for E2B platform
   DBInstanceIdentifier:
@@ -317,14 +314,13 @@ Resources:
   BastionSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Security group restricting SSH connections to the bastion host from explicitly configured IP ranges only
+      GroupDescription: Security group allowing SSH connections to the bastion host from specified IP ranges
       VpcId: !Ref VPC
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: "22"
           ToPort: "22"
           CidrIp: !Ref AllowRemoteSSHIPs
-          Description: SSH access restricted to specified IP range from AllowRemoteSSHIPs parameter
       SecurityGroupEgress:
         - IpProtocol: "-1"
           CidrIp: "0.0.0.0/0"
