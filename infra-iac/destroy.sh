@@ -106,7 +106,7 @@ done
 echo "Completed emptying S3 buckets and modifying ELB deletion protection."
 
 # Now proceed with Terraform destroy
-TERRAFORM_DIR="/opt/infra/sample-e2b-on-aws/infra-iac/terraform"
+TERRAFORM_DIR="/opt/infra/flow-sample-e2b-on-aws/infra-iac/terraform"
 
 echo "Changing directory to $TERRAFORM_DIR to execute terraform destroy..."
 

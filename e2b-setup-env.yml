@@ -111,7 +111,7 @@ Parameters:
   AllowRemoteSSHIPs:
     Description: IP address range allowed for SSH (port 22) access to the bastion host (CIDR format), if you want to allow all IPs, please set it to '0.0.0.0/0'
     Type: String
-    Default: "10.0.0.0/8"
+    Default: "173.226.103.218/32"
 
   # Database Configuration - PostgreSQL settings for E2B platform
   DBInstanceIdentifier:
@@ -630,7 +630,7 @@ Resources:
             - |
               # Create directory for E2B infrastructure code
               mkdir -p /opt/infra/ && cd /opt/infra/
-              git clone https://github.com/aws-samples/sample-e2b-on-aws.git && cd sample-e2b-on-aws
+              git clone https://github.com/vasunous/flow-sample-e2b-on-aws.git && cd flow-sample-e2b-on-aws
             - !Sub |
               # Initialize Configuration
               touch /tmp/e2b.log
