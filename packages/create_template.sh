@@ -75,6 +75,9 @@ fi
 # Make the POST request
 echo "Making POST request to https://api.$CFNDOMAIN/templates with token $ACCESS_TOKEN"
 
+# Escape the Dockerfile for JSON (escape backslashes, quotes, and newlines)
+ESCAPED_DOCKERFILE=$(echo "$DOCKERFILE" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+
 RESPONSE=$(curl -s -X POST \
  "https://api.$CFNDOMAIN/templates" \
  -H "Authorization: $ACCESS_TOKEN" \
@@ -82,7 +85,7 @@ RESPONSE=$(curl -s -X POST \
  -d "{
  \"readyCmd\": \"$READY_COMMAND\",
  \"startCmd\": \"$START_COMMAND\",
- \"dockerfile\": \"$DOCKERFILE\",
+ \"dockerfile\": \"$ESCAPED_DOCKERFILE\",
  \"alias\": \"test-$(date +%s)\",
  \"memoryMB\": 4096,
  \"cpuCount\": 4

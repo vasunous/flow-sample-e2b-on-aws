@@ -73,13 +73,13 @@ locals {
       max_size         = 1
       min_size         = 1
     }
-    # Build nodes for environment building (currently not active)
+    # Build nodes for environment building
     build = {
       instance_type_x86    = var.environment == "prod" ? "m6i.xlarge" : "t3.xlarge"
       instance_type_arm    = var.environment == "prod" ? "m7g.xlarge" : "t4g.xlarge"
-      desired_capacity = 0
-      max_size         = 0
-      min_size         = 0
+      desired_capacity = 1  # Enable build cluster for template creation
+      max_size         = 3  # Allow scaling up to 3 instances
+      min_size         = 1  # Keep at least 1 instance running
     }
   }
 }
