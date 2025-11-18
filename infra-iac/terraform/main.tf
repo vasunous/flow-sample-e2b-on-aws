@@ -59,8 +59,8 @@ locals {
     }
     # Client nodes run workloads and containers
     client = {
-      instance_type_x86    = "c5.xlarge"
-      instance_type_arm    = "c7g.xlarge"
+      instance_type_x86    = "c5.metal"
+      instance_type_arm    = "c7g.metal"
       desired_capacity = 1
       max_size         = 5
       min_size         = 0
@@ -73,13 +73,13 @@ locals {
       max_size         = 1
       min_size         = 1
     }
-    # Build nodes for environment building
+    # Build nodes for environment building (currently not active)
     build = {
       instance_type_x86    = var.environment == "prod" ? "m6i.xlarge" : "t3.xlarge"
       instance_type_arm    = var.environment == "prod" ? "m7g.xlarge" : "t4g.xlarge"
-      desired_capacity = 1  # Enable build cluster for template creation
-      max_size         = 3  # Allow scaling up to 3 instances
-      min_size         = 1  # Keep at least 1 instance running
+      desired_capacity = 0
+      max_size         = 0
+      min_size         = 0
     }
   }
 }
@@ -364,15 +364,6 @@ resource "aws_security_group" "server_sg" {
   description = "Security group for server instances"
   vpc_id      = var.VPC.id
 
-  # SSH access - restricted to specific IP only
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["173.226.103.218/32"]
-    description = "SSH access restricted to specific IP address"
-  }
-
   # Consul ports
   ingress {
     from_port   = 8300
@@ -381,7 +372,7 @@ resource "aws_security_group" "server_sg" {
     cidr_blocks = [var.VPC.CIDR]
   }
 
-  # Allow all inbound traffic (excluding SSH which is restricted above)
+  # Allow all inbound traffic
   ingress {
     from_port   = 0
     to_port     = 0
@@ -503,15 +494,6 @@ resource "aws_security_group" "client_sg" {
   description = "Security group for client instances"
   vpc_id      = var.VPC.id
 
-  # SSH access - restricted to specific IP only
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["173.226.103.218/32"]
-    description = "SSH access restricted to specific IP address"
-  }
-
   # Consul ports
   ingress {
     from_port   = 8300
@@ -528,7 +510,7 @@ resource "aws_security_group" "client_sg" {
     cidr_blocks = [var.VPC.CIDR]
   }
 
-  # Allow all inbound traffic (excluding SSH which is restricted above)
+  # Allow all inbound traffic
   ingress {
     from_port   = 0
     to_port     = 0
@@ -666,15 +648,6 @@ resource "aws_security_group" "api_sg" {
   description = "Security group for API instances"
   vpc_id      = var.VPC.id
 
-  # SSH access - restricted to specific IP only
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["173.226.103.218/32"]
-    description = "SSH access restricted to specific IP address"
-  }
-
   # Consul ports
   ingress {
     from_port   = 8300
@@ -715,7 +688,7 @@ resource "aws_security_group" "api_sg" {
     cidr_blocks = [var.VPC.CIDR]
   }
 
-  # Allow all inbound traffic (excluding SSH which is restricted above)
+  # Allow all inbound traffic
   ingress {
     from_port   = 0
     to_port     = 0
@@ -1097,15 +1070,6 @@ resource "aws_security_group" "build_sg" {
   description = "Security group for build instances"
   vpc_id      = var.VPC.id
 
-  # SSH access - restricted to specific IP only
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["173.226.103.218/32"]
-    description = "SSH access restricted to specific IP address"
-  }
-
   # Consul ports
   ingress {
     from_port   = 8300
@@ -1130,7 +1094,7 @@ resource "aws_security_group" "build_sg" {
     cidr_blocks = [var.VPC.CIDR]
   }
 
-  # Allow all inbound traffic (excluding SSH which is restricted above)
+  # Allow all inbound traffic
   ingress {
     from_port   = 0
     to_port     = 0

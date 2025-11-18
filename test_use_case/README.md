@@ -1,6 +1,6 @@
 # E2B SDK Test Suite
 
-This repository contains a test suite for verifying compatibility and functionality of the [E2B on AWS](https://github.com/vasunous/flow-sample-e2b-on-aws). The tests are designed to validate core functionality and identify compatibility issues across different SDK versions.
+This repository contains a test suite for verifying compatibility and functionality of the [E2B on AWS](https://github.com/aws-samples/sample-e2b-on-aws). The tests are designed to validate core functionality and identify compatibility issues across different SDK versions.
 
 ## Overview
 

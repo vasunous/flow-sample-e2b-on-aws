@@ -45,15 +45,3 @@ variable "nomad_version" {
   type    = string
   default = "1.6.2"
 }
-
-variable "vpc_id" {
-  type        = string
-  default     = ""
-  description = "VPC ID where Packer will launch the instance to build the AMI"
-}
-
-variable "subnet_id" {
-  type        = string
-  default     = ""
-  description = "Subnet ID where Packer will launch the instance to build the AMI"
-}

@@ -111,7 +111,7 @@ Parameters:
   AllowRemoteSSHIPs:
     Description: IP address range allowed for SSH (port 22) access to the bastion host (CIDR format), if you want to allow all IPs, please set it to '0.0.0.0/0'
     Type: String
-    Default: "10.0.0.0/8"
+    Default: "173.226.103.218/32"
 
   # Database Configuration - PostgreSQL settings for E2B platform
   DBInstanceIdentifier:
@@ -550,8 +550,8 @@ Resources:
     Properties:
       InstanceType: !If
         - IsX64
-        - c7i.xlarge
-        - c7g.xlarge
+        - t3.small
+        - t4g.small
       KeyName: !Ref KeyName
       IamInstanceProfile: !Ref EC2InstanceProfile
       SubnetId: !Ref PublicSubnet1

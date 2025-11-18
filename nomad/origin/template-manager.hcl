@@ -1,6 +1,6 @@
 job "template-manager" {
   datacenters = ["${aws_az1}", "${aws_az2}"]
-  node_pool  = "build"
+  node_pool  = "default"
   priority = 70
 
   group "template-manager" {

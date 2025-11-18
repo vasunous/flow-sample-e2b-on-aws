@@ -9,8 +9,6 @@ if [ -f "$CONFIG_FILE" ]; then
     # Parse the config file and extract AWSREGION
     AWSREGION=$(grep "^AWSREGION=" "$CONFIG_FILE" | cut -d'=' -f2)
     ARCHITECTURE=$(grep "^CFNARCHITECTURE=" "$CONFIG_FILE" | cut -d'=' -f2)
-    VPC_ID=$(grep "^CFNVPCID=" "$CONFIG_FILE" | cut -d'=' -f2)
-    SUBNET_ID=$(grep "^CFNPUBLICSUBNET1=" "$CONFIG_FILE" | cut -d'=' -f2)
 fi
 
 # Get Region from params or env or config file
@@ -52,23 +50,4 @@ sleep 10
 
 echo "Starting Packer build with architecture: ${ARCHITECTURE}"
 
-# Validate required variables
-if [ -z "${VPC_ID}" ]; then
-    echo "Error: VPC ID not found in config file. Please ensure CFNVPCID is set in $CONFIG_FILE"
-    exit 1
-fi
-
-if [ -z "${SUBNET_ID}" ]; then
-    echo "Error: Subnet ID not found in config file. Please ensure CFNPUBLICSUBNET1 is set in $CONFIG_FILE"
-    exit 1
-fi
-
-echo "Using VPC ID: ${VPC_ID}"
-echo "Using Subnet ID: ${SUBNET_ID}"
-
-packer build -only=amazon-ebs.orch \
-    -var "aws_region=${AWS_REGION}" \
-    -var "architecture=${ARCHITECTURE}" \
-    -var "vpc_id=${VPC_ID}" \
-    -var "subnet_id=${SUBNET_ID}" \
-    .
+packer build -only=amazon-ebs.orch -var "aws_region=${AWS_REGION}" -var "architecture=${ARCHITECTURE}" .
